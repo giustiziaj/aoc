@@ -5,6 +5,8 @@ head_y=0
 tail_x=0
 tail_y=0
 
+tail_positions=$(mktemp)
+
 while read direction distance; do
   for i in $(seq $distance); do
     case $direction in
@@ -25,6 +27,8 @@ while read direction distance; do
       tail_x=$(( tail_x + (hor_gap / 2) ))
     fi
 
-    echo $tail_x $tail_y
+    echo "$tail_x $tail_y" >> "$tail_positions"
   done
-done | sort | uniq | wc -l
+done
+
+sort <$tail_positions | uniq | wc -l
